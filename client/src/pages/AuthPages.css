@@ -1,0 +1,139 @@
+.auth-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  background:
+    radial-gradient(circle at top left, var(--accent-bg), transparent 45%),
+    radial-gradient(circle at bottom right, rgba(66, 133, 244, 0.12), transparent 40%);
+}
+
+.auth-card {
+  width: min(100%, 420px);
+  padding: 40px 32px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.home-card {
+  width: min(100%, 520px);
+}
+
+.auth-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.auth-brand h1 {
+  margin: 0;
+  font-size: 40px;
+  letter-spacing: -1.2px;
+}
+
+.auth-logo {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent), #4285f4);
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.auth-subtitle {
+  margin: 0 0 28px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.success-text {
+  margin-top: 8px;
+}
+
+.google-button,
+.logout-button,
+.auth-link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.google-button {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  box-shadow: var(--shadow);
+}
+
+.google-button:hover,
+.logout-button:hover,
+.auth-link-button:hover {
+  transform: translateY(-1px);
+}
+
+.logout-button,
+.auth-link-button {
+  border: 1px solid var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--text-h);
+}
+
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.user-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent-border);
+}
+
+.user-avatar-fallback {
+  display: grid;
+  place-items: center;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.user-details h2 {
+  margin: 0 0 4px;
+  font-size: 28px;
+}
+
+.user-details p {
+  margin: 0;
+}
+
+.user-meta {
+  margin-top: 8px !important;
+  font-size: 14px;
+  color: var(--text);
+}
