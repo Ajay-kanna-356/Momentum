@@ -10,14 +10,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum GoalStatus {
+  active
+  completed
+  archived
+}
+
+enum HabitStatus {
+  active
+  archived
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
 model User {
-  id             Int           @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   name           String
-  email          String        @unique
-  profilePicture String?       @map("profile_picture")
-  createdAt      DateTime      @default(now()) @map("created_at")
-  updatedAt      DateTime      @updatedAt @map("updated_at")
+  email          String         @unique
+  profilePicture String?        @map("profile_picture")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
   authAccounts   AuthAccount[]
+  goals          Goal[]
+  habits         Habit[]
+  activities     Activity[]
+  journalEntries JournalEntry[]
 
   @@map("users")
 }
@@ -32,4 +57,102 @@ model AuthAccount {
 
   @@unique([provider, providerUserId])
   @@map("auth_accounts")
+}
+
+model Goal {
+  id          Int        @id @default(autoincrement())
+  userId      Int        @map("user_id")
+  title       String
+  description String?
+  status      GoalStatus @default(active)
+  targetDate  DateTime?  @map("target_date") @db.Date
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  habits      Habit[]
+
+  @@index([userId])
+  @@map("goals")
+}
+
+model Habit {
+  id          Int             @id @default(autoincrement())
+  userId      Int             @map("user_id")
+  goalId      Int?            @map("goal_id")
+  title       String
+  description String?
+  status      HabitStatus     @default(active)
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goal        Goal?           @relation(fields: [goalId], references: [id], onDelete: SetNull)
+  schedules   HabitSchedule[]
+  logs        HabitLog[]
+  activities  Activity[]
+
+  @@index([userId])
+  @@index([goalId])
+  @@map("habits")
+}
+
+model HabitSchedule {
+  id        Int       @id @default(autoincrement())
+  habitId   Int       @map("habit_id")
+  dayOfWeek DayOfWeek @map("day_of_week")
+  habit     Habit     @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@unique([habitId, dayOfWeek])
+  @@index([habitId])
+  @@map("habit_schedules")
+}
+
+model HabitLog {
+  id        Int      @id @default(autoincrement())
+  habitId   Int      @map("habit_id")
+  day       DateTime @db.Date
+  completed Boolean
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@unique([habitId, day])
+  @@index([habitId])
+  @@index([day])
+  @@map("habit_logs")
+}
+
+model Activity {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @map("user_id")
+  habitId     Int?      @map("habit_id")
+  title       String
+  description String?
+  startTime   DateTime? @map("start_time") @db.Time(0)
+  endTime     DateTime? @map("end_time") @db.Time(0)
+  duration    Int?
+  day         DateTime  @db.Date
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  habit       Habit?    @relation(fields: [habitId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([habitId])
+  @@index([day])
+  @@map("activities")
+}
+
+model JournalEntry {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  day       DateTime @db.Date
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, day])
+  @@index([userId])
+  @@index([day])
+  @@map("journal_entries")
 }
