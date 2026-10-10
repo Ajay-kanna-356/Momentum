@@ -6,7 +6,20 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "vitest": {
+    "environment": "node",
+    "globals": true,
+    "pool": "forks",
+    "poolOptions": {
+      "forks": {
+        "singleFork": true
+      }
+    }
   },
   "keywords": [],
   "author": "",
@@ -21,7 +34,10 @@
     "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^5.0.3",
     "nodemon": "^3.1.7",
-    "prisma": "^5.22.0"
+    "prisma": "^5.22.0",
+    "supertest": "^7.3.1",
+    "vitest": "^5.0.3"
   }
 }
