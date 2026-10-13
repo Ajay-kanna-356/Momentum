@@ -9,6 +9,7 @@ import habitLogRoutes from "./routes/habitLog.routes.js";
 import activityRoutes from "./routes/activity.routes.js";
 import journalRoutes from "./routes/journal.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
+import aiRoutes from "./routes/ai.routes.js";
 import { errorHandler } from "./middleware/error.middleware.js";
 
 initializePassport();
@@ -34,6 +35,8 @@ app.use("/habit-logs", habitLogRoutes);
 app.use("/activities", activityRoutes);
 app.use("/journal", journalRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/api/ai", aiRoutes);
+app.use("/ai", aiRoutes);
 
 // Central error handler (must be last)
 app.use(errorHandler);

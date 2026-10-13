@@ -32,13 +32,13 @@ export async function getDashboardForDay(userId, day) {
         },
     });
 
-    // Habit logs for those habits on this day
-    const habitIds = scheduledHabits.map((h) => h.id);
-    const habitLogs = habitIds.length
-        ? await prisma.habitLog.findMany({
-              where: { habitId: { in: habitIds }, day },
-          })
-        : [];
+    // Habit logs for the user's habits on this day
+    const habitLogs = await prisma.habitLog.findMany({
+        where: {
+            habit: { userId },
+            day,
+        },
+    });
 
     // Activities for this day
     const activities = await prisma.activity.findMany({
